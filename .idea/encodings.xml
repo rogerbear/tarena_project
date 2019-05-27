@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$/MySQL/day01/MySQL-Day01.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/MySQL/day02/1-MOSHOU.hero.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/MySQL/day02/2-MOSHOU.sanguo.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/MySQL/day02/MySQL-Day02.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/MySQL/day03/Day03-homework.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/MySQL/day03/LianJieChaXun.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/MySQL/day03/MySQL-Day03.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/MySQL/day04/MySQL-Day04.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/python_thread/day01/day1.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/python_thread/day02/day2.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/python_thread/day03/day3.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/python_thread/day04/day4.txt" charset="GBK" />
+  </component>
+</project>

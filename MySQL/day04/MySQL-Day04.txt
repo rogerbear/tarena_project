@@ -1,0 +1,256 @@
+MySQL-Day03回顾
+	1、索引
+		1、普通索引(index)
+		2、唯一索引(UNI,字段值不允许重复,可为NULL)
+			1、创建
+				1、创建表时创建
+					1、字段名 数据类型 unique
+					2、unique(字段名),unique(字段名)
+				2、在已有表中创建
+					create unique index 索引名 on 表名(字段名);
+			2、删除
+				drop index 索引名 on 表名;
+		3、主键&自增长(PRI,字段值不允许重复,不能为NULL)
+			1、注意
+				一个表中只能有一个主键字段,通常把编号字段设置为主键字段
+			2、创建
+				1、创建表时创建
+					1、字段名 数据类型 primary key auto_increment
+					2、primary key(字段名)
+				2、在已经有表创建
+					alter table 表名 add primary key(字段名);
+				3、删除
+					1、先删除自增长属性
+						alter table 表名 modify 字段名 数据类型
+					2、再删除主键
+						alter table 表名 drop primary key;
+				4、在已有表中添加自增长属性
+					alter table 表名 modify 字段名 数据类型 primary key auto_increment;
+	2、数据导入
+		1、语法格式
+			load data infile "文件名"
+			into table 表名
+			fields terminated by "分隔符"
+			lines terminated by "\n"
+			## 文件名处必须要写绝对路径
+		2、数据导入的步骤
+			1、在数据库中创建对应的表
+			2、查看数据库的搜索路径
+				show variables like "secure_file_priv"; | "%secure%"
+			3、将文件拷贝到数据库的搜索路径中
+			4、执行数据导入命令
+				mysql> load data infile ...
+	3、数据导出
+		1、语法格式
+			select 查询语句 
+			into outfile "文件名"
+			fields terminated by "分隔符"
+			lines terminated by "\n"
+		2、数据导出的步骤
+			1、查看数据库的搜索路径
+			2、执行数据导出命令
+		3、注意
+			1、导出的内容完全由select查询语句决定
+			2、执行导出命令时路径必须要为数据的搜索路径
+	4、表复制
+		1、语法格式
+			create table 表名 select 查询语句;
+		2、复制表结构
+			create table 表名 select 查询语句 where false
+		3、复制表不会把原表的key属性复制过来
+	5、子查询(嵌套查询)
+		1、语法格式
+			select 查询语句 where 字段名 运算符(SQL查询)
+	6、多表查询
+		1、笛卡尔积(不加where条件)
+			select 字段名列表 from 表名列表;
+		2、加where条件
+			select 字段名列表 from 表名列表 where 条件;
+	7、连接查询
+		1、内连接(只显示匹配到的行)
+			select 字段名列表 from 表1
+			inner join 表2 on 条件;
+		2、左连接(以左表为主显示查询结果)
+			... 表1 left join 表2 on 条件;
+		3、右连接(以右表为主显示查询结果)
+			... 表1 right join 表2 on 条件;
+1、外键
+	1、定义
+		让当前表的字段的值在另一张表的范围内选择
+	2、语法格式
+		foreign key(参考字段名)
+		references 被参考表名(被参考字段名)
+		on delete 级联动作
+		on update 级联动作
+	3、使用规则
+		1、两张表被参考字段和参考字段数据类型要一致
+		2、被参考字段必须是key的一种,通常primary key
+	4、案例
+		表1：缴费信息表(财务)
+			学号	姓名	班级	缴费金额
+			  1  唐伯虎 AID01  28000
+				2	 点秋香 AID01  20000
+			create table jftab(
+			id int primary key,
+			name varchar(20),
+			class char(5),
+			money int
+			)default charset=utf8;
+
+			insert into jftab values
+			(1,"唐伯虎","AID01",28000),
+			(2,"点秋香","AID01",20000),
+			(3,"文征明","AID01",25000);
+
+		表2：学生信息表(班主任)
+			学号	姓名	缴费金额
+			  1  唐伯虎 28000  
+			create table bjtab(
+			stu_id int,
+			name varchar(20),
+			money int,
+			foreign key(stu_id) references jftab(id)
+			on delete cascade
+			on update cascade
+			)default charset=utf8;
+
+			insert into bjtab values
+			(1,"唐伯虎",28000),
+			(2,"点秋香",20000);
+	 5、级联动作
+		 1、cascade ：数据级联更新
+			 当主表删除记录或者更改被参考字段的值时,从表会级联更新
+		 2、restrict(默认)
+			 当主表删除或者更新被参考字段的值时,如果从表中有相关联记录则不允许主表删除或更新,必须先删除从表中相关联记录
+		 3、set null
+			 当主表删除或者更新被参考字段值时,从表中相关联记录的外键字段值自动设置为NULL
+		 4、no action(同restrict)
+			 on delete no action on update no action
+			 同restrict,都是立即检查外键限制
+	 6、删除外键
+		 alter table 表名 drop foreign key 外键名;
+		 注意：
+			1、外键名的查看方式
+				show create table 表名;
+	 7、在已有表中添加外键
+		 alter table 表名 add foreign key(参考字段名) references 被参考表名(被参考字段名) 
+		 on delete 级联动作
+		 on update 级联动作
+		 注意：
+			在已有表中添加外键时,会收到表中原有数据的限制
+2、数据备份(mysqldump,在Linux终端下操作)
+	1、命令格式
+		mysqldump -u用户名 -p 源库名 > 路径/XXX.sql
+	2、示例
+		1、备份day03库,放到用户主目录下mydata/day03.sql
+	3、源库名的表示方式
+		--all-databases 备份所有库
+		库名            备份单个库
+		-B 库1 库2 库3  备份多个库
+		库名 表1 表2    备份指定库的指定表
+	4、练习
+		1、备份所有库all_mysql.sql
+		2、备份MOSHOU和day02库为md2.sql
+		3、备份MOSHOU库下的sanguo、hero两张表sh.sql
+3、数据恢复
+	1、命令格式
+		mysql -u用户名 -p 目标库名 < 路径/XXX.sql
+	2、从所有库的备份文件中恢复某一个库
+		mysql -u用户名 -p --one-database 库名 < all_mysql.sql
+	3、注意
+		1、恢复库时如果恢复到原库会将表中数据覆盖,新增的表不会删除
+		2、在数据恢复时如果要恢复的库不存在,则先要创建空库
+4、事务和事务回滚
+	1、定义
+		一件事从开始发生到结束的整个过程
+	2、作用
+		确保数据的一致性
+	3、属性
+		1、原子性：一个事务是不可分割的工作单位,事务中的各个操作要么都做,要么都不做
+		2、一致性：事务必须从一个一致性状态到另一个一致性状态
+		3、隔离性：一个事务的执行不能被其他并发的事务干扰
+		4、持久性：一个事务一旦提交,它对数据库中数据的改变是持久性的
+	4、事务及事务回滚的应用
+		1、MySQL中默认的SQL语句结果会自动commit到数据库
+			show variables like "autocommit";
+		2、事务应用
+			1、开启事务
+				mysql> start transaction;
+				mysql> ... 一句或多句SQL命令
+				##此时autocommit被禁用,SQL命令不会对数据库中数据做修改
+			2、终止事务
+				mysql> commit; | rollback;
+		3、注意
+			事务和事务回滚只针对于对表记录的操作:增删改有效,对库和表的操作无效
+	5、案例
+		1、背景
+			你：建行卡
+			你朋友：工行卡
+			你在建行的自动提款机上给你朋友转账5000元
+		2、过程
+			表1：CCB
+				create table CCB(
+				name char(20),
+				money int
+				);
+				insert into CCB values("转钱",100000);
+			表2：ICBC
+				create table ICBC(
+				name char(20),
+				money int
+				);
+				insert into ICBC values("借钱",0);
+6、python数据库编程
+	1、python数据库接口(Python DB-API)
+		1、定义
+			为开发人员提供的数据库应用编程接口
+		2、支持的数据库服务软件
+			MySQL、Oracle、SQL_Server、Sybase、MongoDB ...
+		3、Python提供的操作MySQL的模块
+			pymysql
+		4、pymysql的使用流程
+			1、建立数据库连接
+			2、创建游标对象
+			3、使用游标对象的方法和SQL语句操作数据库
+			4、提交commit
+			5、关闭游标对象
+			6、关闭数据库连接
+		5、建立数据库连接
+			1、语法
+				对象名=pymysql.connect
+				("主机地址","用户名","密码","库名",charset="utf8",port=3306)
+			2、connect对象(db)支持的方法
+				1、cursor() 创建一个游标对象
+				2、commit() 提交到数据库(增删改)
+				3、rollback() 回滚
+				4、close()  关闭数据库连接
+			3、关于cursor对象支持的方法
+				1、execute(op)  执行基本SQL命令
+				2、fetchone() 取得结果集的第一行记录
+				3、fetchmany(size)取得结果集的size行记录
+				4、fetchall() 取得结果集的所有行
+				5、close()    关闭游标对象
+				属性：
+					rowcount 返回数据条数或影响行数
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+

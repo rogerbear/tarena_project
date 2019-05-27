@@ -1,0 +1,360 @@
+MySQL-Day02回顾
+	1、表记录的管理(删除、更改)
+		1、删除表记录
+			1、delete from 表名 where 条件;
+				## 不加where条件将表记录全部删除
+		2、更新表记录
+			1、update 表名 set 字段名=值1,...,where 条件;
+				## 不加where条件表中所有记录全部更改
+	2、运算符
+		1、数值比较&字符比较
+			1、数值比较：= != > >= < <=
+			2、字符比较：= !=
+		2、逻辑比较
+			1、运算符：and or
+		3、范围内比较
+			1、运算符：between and 、 in 、not in
+		4、匹配空、非空
+			1、空：is null
+			2、非空：is not null
+			3、注意
+				1、null ：空值,必须用is、is not
+				2、""   ：空字符串,用 = !=去匹配
+		5、模糊比较
+			1、语法：字段名 like 表达式
+			2、_ 匹配单个字符
+				%  匹配0到多个字符
+	3、SQL查询
+		1、order by(排序)
+			1、order by 字段名 ASC/DESC;
+		2、limit(永远放在SQL语句的最后写)
+			limit m
+			limit m,n
+		3、聚合函数
+			avg(字段名)、sum(字段名)、max()、min()
+			count(字段名) ##字段值NULL不会被统计
+		4、group by(给查询的结果进行分组)
+			1、注意
+				1、group by之后的字段名必须要为select后的字段名
+				2、如果select后的字段名没有在group by之后出现，则必须要对该字段进行聚合处理(聚合函数)
+		5、having(对查询结果进行进一步筛选)
+			1、having与group by语句联合使用，用来过滤由group by语句返回的记录集
+			2、弥补了where关键字不能与聚合函数联合使用的不足
+			3、where只能操作表中实际存在的字段,having可操作聚合函数生成的显示列
+		6、distinct(不显示字段的重复值)
+			1、distinct和from之间所有的字段必须全部相同才能去重
+			2、distinct不能对任何字段进行聚合处理
+		7、查询表记录时做数学运算
+			+ - * / %
+		8、总结(执行顺序)
+			3、select ...聚合函数 from ...
+			1、where ...
+			2、group by ...
+			4、having ...
+			5、order by ...
+			6、limit ...
+	4、约束
+		1、默认约束(default)
+		2、非空约束(not null)
+	5、索引
+		1、BTREE
+		2、优点：可以加快数据的检索速度
+		3、缺点
+			1、需要动态维护,降低数据的维护速度
+			2、索引占用物理空间
+		4、索引类型
+			1、普通索引(index-MUL)
+				1、创建
+					1、创建表：index(字段名),index(字段名)...
+					2、已有表：create index 索引名 on 表名(字段名);
+				2、查看
+					1、desc 表名;
+					2、show index from 表名;
+				3、删除(只能一个一个删)
+					drop index 索引名 on 表名;
+MySQL-Day03笔记
+1、索引
+	1、普通索引(index)
+	2、唯一索引(unique)
+		1、使用规则
+			1、一个表中可以有多个unique字段
+			2、unique字段的值不允许重复,但可以为空值
+			3、unique的key标志是UNI
+		2、创建唯一索引
+			1、创建表时创建
+				1、方式一
+					create table t1(
+					id int(3) zerofill,
+					name char(20) unique
+					);
+				2、方式二
+					create table t2(
+					id int,
+					name char(20),
+					age tinyint,
+					unique(name),
+					unique(age)
+					);
+			2、在已有表中创建
+				create unique index 索引名 on 表名(字段名);
+		3、删除唯一索引(unique)
+			drop index 索引名 on 表名;
+			删除普通索引、唯一索引只能一个一个删
+	3、主键(primary key)
+		1、使用规则
+			1、一个表中只能有一个主键(primary)字段
+			2、对应字段的值不允许重复,且不能为空值
+			3、主键字段的KEY标志为PRI
+			4、把表中能够唯一标识一条记录的字段设置为主键字段
+		2、创建主键(primary key)
+			1、在创建表时创建
+				1、方式一：字段名 数据类型 primary key,
+					create table t3(
+					id int primary key,
+					name char(20)
+					);
+				2、方式二：
+					create table t4(
+					id int,
+					name char(20),
+					primary key(id)
+					);
+			2、在已有表中创建主键
+				alter table 表名 add primary key(字段名);
+			3、删除主键
+				如果主键带自增长属性,则先要删除自增长属性,再删除主键
+				alter table 表名 modify 字段名 数据类型;
+				alter table 表名 drop primary key;
+		3、自增长属性(auto_increment)
+			1、作用：通常和主键一起配合使用
+			2、创建表时添加自增长属性
+				字段名 数据类型 primary key auto_increment
+				create table t5(
+				id int primary key auto_increment,
+				name char(15)
+				);
+			3、在已有表中添加自增长属性
+				alter table 表名 modify 字段名 数据类型 primary key auto_increment;
+2、数据导入
+	1、作用
+		把文件系统的内容导入到数据库中
+	2、语法
+		load data infile "文件名"
+		into table 表名
+		fields terminated by "分隔符"
+		lines terminated by "\n"
+	3、练习
+		把/etc/passwd文件中的内容导入到库day03下的userinfo表中
+		
+		tarena : x  :  1000  :  1000  :  tarena,,,
+		用户名  密码   UID      GID			 用户描述
+		:/home/tarena  :  /bin/bash
+		 主目录						登录权限
+	4、操作步骤
+		1、在数据中创建对应的表
+		2、将要导入的文件拷贝到数据库的默认搜索路径中
+		3、将系统文件导入到创建的表中
+
+		1、创建表
+			create table userinfo(
+			username char(20),
+			password char(1),
+			uid int,
+			gid int,
+			comment varchar(50),
+			homedir varchar(50),
+			shell varchar(50)
+			);
+		2、将要导入的文件拷贝到数据库的默认搜索路径中
+			1、如何查看数据库的默认搜索路径
+				show variables like "secure_file_priv";
+			2、sudo cp /etc/passwd /var/lib/mysql-files/
+		3、执行数据导入语句
+		load data infile "/var/lib/mysql-files/passwd"
+		into table userinfo
+		fields terminated by ":"
+		lines terminated by "\n"
+
+		4、在userinfo表中第一列添加一个id字段,类型为int,设置为主键带自增长属性
+			alter table userinfo add id int primary key auto_increment first
+	5、练习2
+		导入AID1709.csv成绩表
+		1、创建对应的表
+			create table AID1709(
+			id int,
+			name varchar(15),
+			score float(5,2),
+			phone char(11),
+			class char(7)
+			)default charset=utf8;
+		2、拷贝到数据库目录下
+			sudo cp /home/tarena/AID1709.csv /var/lib/mysql-files/
+		3、执行数据导入语句
+			load data infile "/var/lib/mysql-files/AID1709.csv"
+			into table AID1709
+			fields terminated by ","
+			lines terminated by "\n"
+	6、注意Ubuntu中文件的权限问题
+		1、sudo -i
+		2、cd /var/lib/mysql-files
+		3、ls -l AID1709.csv
+		4、chmod 644 AID1709.csv
+		5、ls -l AID1709.csv ## 有了r权限
+		6、执行导入语句
+			load data infile "/var/lib/mysql-files/AID1709.csv"
+			into table AID1709
+			fields terminated by ","
+			lines terminated by "\n";
+4、数据导出
+	1、作用
+		将数据库表中的记录保存到系统文件里
+	2、语法格式
+		select ... from 表名
+		into outfile "文件名"
+		fields terminated by "分隔符"
+		lines terminated by "\n"
+	3、练习
+		1、把userinfo表中的用户名、密码和uid三个字段导出来,文件名为user.txt
+			select username,password,uid from userinfo
+			into outfile "/var/lib/mysql-files/user.txt"
+			fields terminated by "   "
+			lines terminated by "\n"
+		2、把mysql库下user表中的 user、host两个字段的值导出到user2.txt,将其存放在数据库搜索路径下
+			select user,host from mysql.user
+			into outfile "/var/lib/mysql-files/user2.txt"
+			fields terminated by "   "
+			lines terminated by "\n";
+	4、注意
+		1、导出的内容完全由SQL查询语句决定
+		2、执行导出命令时路径必须指定在对应的数据库搜索路径中
+			show variables like "secure_file_priv";
+5、表的复制
+	1、表的复制
+		1、语法
+			create table 表名 select 查询语句;
+		2、练习
+			1、复制userinfo表中全部记录和字段,userinfo2
+				create table userinfo2 select * from userinfo;
+			2、复制userinfo表的前10条记录,userinfo3
+				create table userinfo3 select * from userinfo limit 10;
+			3、复制userinfo表的username,password,uid三个字段的第2-10条记录,userinfo4
+				create table userinfo4 select username,password,uid from userinfo limit 1,9;
+	2、复制表结构
+		1、语法格式
+			create table 表名 select 查询语句 where false;
+		2、注意
+			复制表的时候不会把原表的 key 属性复制过来
+	3、练习
+		1、创建user1表,包含userinfo表中username,uid两个字段的前2条记录
+			create table user1 select username,uid from userinfo limit 2;
+		2、创建user2表,包含userinfo表中gid,homedir两个字段的前3条记录
+			create table user2 select gid,homedir from userinfo limit 3;
+6、嵌套查询
+	1、定义
+		把内层的查询结果作为外层的查询条件
+	2、语法格式
+		select 查询语句 where 条件(select查询语句);
+	3、练习(利用userinfo表操作)
+		1、把uid的值小于这个字段的平均值的用户名和uid显示出来
+			select username,uid from userinfo where uid < (select avg(uid) from userinfo);
+7、多表查询
+	1、两种方式
+		1、select 字段名列表 from 表名列表; 笛卡尔积
+			select * from user1,user2;
+		2、select 字段名列表 from 表名列表 where 条件;
+		3、练习
+			1、显示省市详细信息
+				select sheng.s_name,city.c_name from sheng,city where sheng.s_id=city.cfather_id;
+			2、显示省市县详细信息
+				-> select sheng.s_name,city.c_name,xian.x_name 
+				-> from sheng,city,xian
+				-> where
+				-> sheng.s_id=city.cfather_id and
+				-> city.c_id=xian.xfather_id;
+8、连接查询
+	1、内连接
+		1、定义
+			从表中删除与其他被连接表中没有匹配的所有行
+		2、语法格式
+			select 字段名列表 from 表1
+			inner join 表2 on 条件;
+		3、显示省市详细信息,没有匹配到的不显示
+			-> select sheng.s_name,city.c_name,xian.x_name 
+			-> from sheng 
+			-> inner join city on sheng.s_id=city.cfather_id 
+			-> inner join xian on city.c_id=xian.xfather_id;
+	2、外连接
+		1、左连接
+			1、定义
+				以左表为主显示查询结果
+			2、语法
+				select 字段名列表 from 表1 
+				left join 表2 on 条件;
+			3、练习
+				1、显示省市详细信息,以省表为主显示
+					select sheng.s_name,city.c_name from sheng left join city on sheng.s_id=city.cfather_id;
+				2、显示省市县详细信息,要求市全部显示
+					-> select sheng.s_name,city.c_name,xian.x_name 
+					-> from sheng right join city
+					-> on sheng.s_id=city.cfather_id
+					-> left join xian on city.c_id=xian.xfather_id;
+		2、右连接
+			以右表为准显示查询结果,用法同左连接
+9、ER模型&ER图
+	1、定义
+		ER模型即实体-关系模型,ER图即实体-关系图
+	2、三个概念
+		1、实体
+			1、定义：现实世界中任何可以被认知、区分的事物
+			2、示例
+				1、学校 ：学生、教师、课程、班主任
+				2、企业 ：职工、产品
+		2、属性
+			1、定义：实体所具有的特性
+			2、示例
+				1、学生属性：学号、姓名、年龄、性别
+				2、产品属性：产睥睨编号、名称、规格
+		3、关系
+			1、定义：实体之间的联系
+			2、分类
+				一对一关系(1:1) 班级和班长
+				一对多关系(1:n) 公司和职工
+				多对多关系(m:n) 学生和课程
+		4、ER图的绘制
+			1、矩形框代表实体,菱形框代表关系,椭圆形代表属性
+		
+
+
+
+	
+
+			
+
+
+
+
+		
+		
+
+
+
+
+
+		
+
+			
+			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,6 +9,6 @@ def fun():
 p = mp.Process(target = fun)
 p.daemon = True
 p.start()
-# p.join()
+# p.join()#join和daemon二选其一
 sleep(1)
 print("****main process over******")

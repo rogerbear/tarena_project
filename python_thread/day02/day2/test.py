@@ -1,17 +1,31 @@
-import os
+from multiprocessing import Process
+from time import sleep
 
-pid = os.fork()
+a = 1
 
-if pid < 0:
-    print('create process failed...')
-elif pid == 0:
-    pid2 = os.fork()
-    if pid2 < 0:
-        print('create sub_process failed...')
-    elif pid2 == 0:
-        print('pid2 sucess...')
-    else:
-        os._exit(0)
-else:
-    os.wait()
-    print('parent process ok...')
+
+def worker(sec, msg):
+    global a
+    a = 1000
+    for i in range(2):
+        sleep(sec)
+        print('u r the', msg)
+    print(a)
+
+
+p = Process(target=worker, name='worker', args=(2,), kwargs={'msg': 'good man!'})
+
+print(p.is_alive())
+
+p.start()
+
+print(p.is_alive())
+
+p.join()
+
+print(p.name)
+print(p.pid)
+print(p.is_alive())
+
+# worker(2,'sub process')
+print('parent a:', a)

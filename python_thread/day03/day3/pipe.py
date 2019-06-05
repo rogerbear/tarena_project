@@ -1,4 +1,4 @@
-from multiprocessing import Process,Pipe 
+from multiprocessing import Process,Pipe
 import os,time
 
 #创建管道对象

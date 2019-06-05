@@ -1,4 +1,5 @@
-from multiprocessing import Queue 
+from multiprocessing import Queue
+import queue
 
 #创建消息队列对象
 q = Queue(3)

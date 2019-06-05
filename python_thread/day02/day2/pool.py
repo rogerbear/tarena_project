@@ -12,7 +12,7 @@ pool = mp.Pool(processes = 4)
 
 result = []
 for i in range(10):
-    msg = "hello %d"%i 
+    msg = "hello %d"%i
     #向进程池加入要执行的事件
     r = pool.apply_async(worker,(msg,))
     # pool.apply(worker,(msg,))

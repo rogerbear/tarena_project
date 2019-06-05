@@ -16,7 +16,7 @@ class ClockProcess(Process):
             time.sleep(self.value)
             n -= 1
 
-#s使用自己的进程类创建进程对象
+#使用自己的进程类创建进程对象
 p = ClockProcess(2)
 #start后会自动执行run函数
 p.start()

@@ -1,4 +1,4 @@
-from multiprocessing import Event 
+from multiprocessing import Event
 
 #生成事件对象　
 e = Event() 
@@ -8,6 +8,8 @@ print(e.is_set())
 
 #设置事件对象
 e.set()
+
+print(e.is_set())
 
 #提供事件的阻塞
 e.wait()

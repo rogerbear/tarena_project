@@ -6,13 +6,15 @@ def handler(sig,frame):
     if sig == SIGALRM:
         print("收到了时钟信号")
     elif sig == SIGINT:
-        print("收到了SIGINE就不结束")
+        print("收到了SIGINT就不结束")
 
 alarm(7)
 
 #通过函数　处理信号
 signal(SIGALRM,handler)
 signal(SIGINT,handler)
+
+# pause()
 
 while True:
     print("waiting for signal")

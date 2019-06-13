@@ -1,22 +1,17 @@
-from multiprocessing import Queue, Process
+from signal import *
 import time
 
-q = Queue()
+def handler(sig,frame):
+    if sig == SIGALRM:
+        print('SIGALRM...')
+    elif sig == SIGINT:
+        print('SIGINT...')
 
+signal(SIGALRM, handler)
+signal(SIGINT, handler)
 
-def fun(name):
-    time.sleep(3)
-    q.put('hello' + str(name))
+alarm(6)
 
-
-jobs = []
-for i in range(10):
-    p = Process(target=fun, args=(i,))
-    jobs.append(p)
-    p.start()
-
-for i in jobs:
-    i.join()
-
-while not q.empty():
-    print(q.get())
+while True:
+    time.sleep(2)
+    print('waiting for signal...')

@@ -54,7 +54,7 @@ def saler():
         time.sleep(2)
 
 
-p = Process(name='driver', target=saler)
+p = Process(name='saler', target=saler)
 p.start()
 
 signal(SIGUSR1, driver_handler)

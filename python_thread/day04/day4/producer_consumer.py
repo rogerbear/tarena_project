@@ -15,6 +15,7 @@ class Producer(Thread):
                     count += 1
                     msg = "产品　%d"%count
                     q.put(msg)  #将产品放入队列
+                    print("生产了一个　%s"%msg)
             time.sleep(1)
 
 class Customer(Thread):
@@ -30,6 +31,7 @@ class Customer(Thread):
 for i in range(3):
     p = Producer()
     p.start()
+
 
 #创建５个消费者
 for i in range(5):

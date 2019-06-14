@@ -19,7 +19,7 @@ def fun():
 t = Thread(target = fun)
 t.start()
 
-#主线程不断的让a增加以确保a不会小于100
+#主线程不断的让a增加以确保a不会小于0
 while True:
     sleep(1)
     a += random.randint(1,10)

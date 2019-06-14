@@ -10,7 +10,7 @@ t = threading.Thread(name = 'levi',\
     target = fun)
 
 # t.setDaemon(True)
-t.daemon = True 
+t.daemon = True
 print(t.isDaemon())
 
 t.start()
@@ -18,7 +18,7 @@ t.start()
 print(t.is_alive())  #线程状态
 print(t.name) #线程名称
 
-t.join(2)
+t.join(3)
 
 print("all over",ctime())
 

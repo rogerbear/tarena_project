@@ -37,7 +37,7 @@ p.start()
 signal(SIGUSR1,driver_handler)
 signal(SIGUSR2,driver_handler)
 signal(SIGTSTP,driver_handler)
-signal(SIGINT,SIG_IGN)
+signal(SIGINT,SIG_IGN)#因为SIGINT是发送给每一个进程，所以父进程要忽略,子进程同理
 signal(SIGQUIT,SIG_IGN)
 
 p.join()

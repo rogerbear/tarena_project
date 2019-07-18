@@ -14,8 +14,8 @@ def handler(c):
     os._exit(0)
 
 #创建套接字  绑定  监听
-HOST = '172.60.50.218'
-PORT = 8888
+HOST = '127.0.0.1'
+PORT = 8999
 ADDR = (HOST,PORT)
 BUFFERSIZE = 1024
 

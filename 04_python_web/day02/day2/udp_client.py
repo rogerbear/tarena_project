@@ -1,9 +1,11 @@
 from socket import *
 import sys
 
-#从命令行传入服务器的ＩＰ和端口
-HOST = sys.argv[1]
-PORT = int(sys.argv[2])
+#从命令行传入服务器的IP和端口
+# HOST = sys.argv[1]
+# PORT = int(sys.argv[2])
+HOST = '127.0.0.1'
+PORT = 8999
 ADDR = (HOST,PORT)
 BUFFERSIZE = 1024
 

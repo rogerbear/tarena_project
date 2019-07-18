@@ -2,8 +2,8 @@ from socket import *
 import time
 
 #要链接的服务器的地址信息
-HOST = '172.60.50.218'
-PORT = 8888 
+HOST = '127.0.0.1'
+PORT = 8888
 ADDR = (HOST,PORT)
 
 #创建客户端套接字要和访问的服务器的套接字类型相同

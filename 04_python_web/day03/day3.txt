@@ -24,7 +24,7 @@ tcp连接
 并发 ---》 多进程 fork
 
 实现步骤 ： 1. 创建网络连接
-						1+ 功能架构的设计和客户端退出处理
+						1.1 功能架构的设计和客户端退出处理
 						2. 实现list file
 								@ 客户端请求
 								@ 服务器端确认请求
@@ -71,10 +71,11 @@ rlist, wlist, xlist=select(rlist, wlist, xlist, [timeout])
 功能 ： 通过select 方法监控IO事件
 参数 ： rlist ：列表  存放要监控的IO事件 我们将要处理的IO事件
 
-				wlist : 列表  存放要监控的IO事件 你要主动处理的IO事件
+       wlist : 列表  存放要监控的IO事件 你要主动处理的IO事件
 
-				xlist : 列表  存放要监控的IO事件 你希望发生异常通知你																	 处理的IO事件
-返回值：当select 监控的IO事件中有一个或者多个可以处理的时候结         束阻塞，进行返回
+	   xlist : 列表  存放要监控的IO事件 你希望发生异常通知你处理的IO事件
+
+返回值：当select 监控的IO事件中有一个或者多个可以处理的时候结束阻塞，进行返回
 				r ： 列表  参数rlist中如果有可以处理的IO放在这个列表
 				w ： 列表  参数wlist中如果有可以处理的IO放在这个列表
 				x ： 列表  参数xlist中如果有可以处理的IO放在这个列表
@@ -106,7 +107,7 @@ events = p.poll()                相当于select函数功能
 *往往需要写一个字典 让 io对象和 fileno 对应起来
 
 4. 将IO事件移除监控范围
-p.unregister(s)                  相当于 rlist.remove()
+p.unregister(s)   参数是对象也行，对象的fileno也行       相当于 rlist.remove()
 
 poll 和 epoll中的事件分类
 

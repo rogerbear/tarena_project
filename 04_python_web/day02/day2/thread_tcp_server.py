@@ -37,7 +37,7 @@ while True:
         continue
     print("接收到客户端链接　＞",c.getpeername())
 
-    #分之线程处理客户端事件
+    #分支之线程处理客户端事件
     t = threading.Thread\
     (target = handler,args = (c,))
     t.setDaemon(True)

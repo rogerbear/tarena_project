@@ -12,7 +12,7 @@ class Server(ThreadingMixIn,TCPServer):
 #创建处理类
 class Handler(StreamRequestHandler):
     #当有客户端链接时候调用该函数自动处理
-    #客户段请求事件
+    #客户端请求事件
     def handle(self):
         print("connect from ",self.client_address)
         while True:
@@ -25,6 +25,6 @@ class Handler(StreamRequestHandler):
             self.request.send(b'receive your message')
 
 #使用创建的服务器类来生产服务器
-server = Server(('172.60.50.218',9999),Handler)
+server = Server(('127.0.0.1',8999),Handler)
 #运行服务器
 server.serve_forever()

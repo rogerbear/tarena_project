@@ -6,7 +6,7 @@ import sys
 #s套接字作为一个ＩＯ事件
 s = socket()
 s.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
-s.bind(('172.60.50.218',9999))
+s.bind(('127.0.0.1',9999))
 s.listen(5)
 
 rlist = [s]

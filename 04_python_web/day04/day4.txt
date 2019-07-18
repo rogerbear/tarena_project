@@ -56,7 +56,7 @@ sockfd.setblocking(False)
 
 超时检测 
 
-在状态下，设置程序超时时间。当到达事件后进程不再阻塞等待
+在阻塞状态下，设置程序超时时间。当到达事件后进程不再阻塞等待
 e.g.
 multiprocessing/threading   ---> join
 Queue  --->  get   put  
@@ -128,7 +128,7 @@ TRACE   用于测试和诊断
 CONNECT 保留的请求方法
 OPTIONS 请求获取服务器性能，查询相关资源信息
 
-
+请求头
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Encoding: gzip, deflate, br
 Accept-Language: en-US,en;q=0.5

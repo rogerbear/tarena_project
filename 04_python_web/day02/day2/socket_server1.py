@@ -12,6 +12,6 @@ class Handler(DatagramRequestHandler):
         print("接受到了：",data.decode())
         self.wfile.write(b"receive message")
 
-server = Server(('0.0.0.0',8888),Handler)
+server = Server(('0.0.0.0',8999),Handler)
 server.serve_forever()
 

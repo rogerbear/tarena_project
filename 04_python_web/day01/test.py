@@ -1,17 +1,30 @@
-import socket
+from socket import *
 
-s = socket.gethostname()
+HOST = '127.0.0.1'
+PORT = 8888
+ADDR = (HOST,PORT)
+BUFFERSIZE = 1024
 
-print(s)
+socketfd = socket(AF_INET,SOCK_STREAM)
 
-print(socket.gethostbyname('localhost'))
+socketfd.bind(ADDR)
 
-print(socket.inet_aton('192.168.1.1'))
+socketfd.listen(5)
 
-print(socket.inet_ntoa(b'\xc0\xa8\x01\x01'))
+while True:
+    print('waiting for conn...')
+    conn,addr = socketfd.accept()
+    print('client addr is', addr)
+    while True:
+        data = conn.recv(BUFFERSIZE)
+        if not data:
+            break
+        print('recv data is :',data.decode())
+        n = conn.send(b"recv your msg...\n")
+        print('total bytes is ',n)
 
-print(socket.getservbyname('http'))
-print(socket.getservbyname('https'))
-print(socket.getservbyname('ssh'))
-print(socket.getservbyname('ftp'))
-print(socket.getservbyname('imap'))
+    conn.close()
+
+socketfd.close()
+
+

@@ -306,7 +306,7 @@ sub(pattern,re_string,string,count)
 subn()
 功能 ： 同sub
 参数 ： 同sub
-返回值 ： 比sub多一个实际替换的个数
+返回值 ： 比sub多一个实际替换的个数(元祖返回)
 
 
 groupindex : compile对象属性 得到捕获组名和第几组数字组成的字典

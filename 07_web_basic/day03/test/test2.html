@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <!--
+    1、设置d1中所有的span元素,文本为红色,加粗
+					#d1 span{
+						color:red;
+						font-weight:bold;
+					}
+	2、设置d1中的pp中的span元素,文字大小为18px
+					方案1：
+						#d1>.pp>span{font-size:18px;}
+					方案2：
+						.pp>span{font-size:18px;}
+					方案3：
+						#d1 .pp span{font-size:18px;}
+					方案4：
+						#d1>p.pp span{font-size:18px;}
+	-->
+    <style>
+        #d1 span{
+            color: red;
+            font-weight: bold;
+        }
+        #d1>.pp>span{
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="d1">
+        <span>d1中的span元素</span>
+        <p class="pp">
+            <span>d1中的pp中的span</span>
+        </p>
+    </div>
+
+</body>
+</html>

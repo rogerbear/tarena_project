@@ -5,7 +5,7 @@
 		语法：
 			<ANY onclick="JS执行代码">
 			JS执行代码：
-				console.log("向控制台中输出一句话");
+				console.log("向控制台中输出一句话") ;
 				console.log('向控制台中输出一句话');
 	2、将代码嵌入在网页中的<script></script>里
 		语法：
@@ -76,7 +76,7 @@
 				var age;
 				var userName;
 
-				var name = ""; //不能用
+				var name = ""; //不能用name作为变量名
 		4、变量的使用
 			1、为变量赋值
 				只要变量出现在赋值符号(=)的左边，一律是赋值操作

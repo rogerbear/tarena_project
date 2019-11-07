@@ -11,7 +11,7 @@
 		1、语法
 			属性：
 				box-shadow:h-shadow v-shadow blur spread color;
-					h-shadow:阴影的水平偏移距离
+					h-sha dow:阴影的水平偏移距离
 						取值为数字
 						取值为正，阴影向右偏移
 						取值为负，阴影向左偏移
@@ -86,7 +86,7 @@
 					注意：
 						1、auto只能用在左右外边距上，上下无效
 						2、只能为设置宽度的块级元素设置左右外边距为auto，目的是为了让块级元素水平居中显示
-			3、margin的简介写法
+			3、margin的简洁写法
 				1、margin:value
 					value表示的是上下左右四个方向的外边距值
 					ex:

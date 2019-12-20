@@ -21,7 +21,7 @@
 			2、输入框
 				window.prompt() / prompt()
 			3、确认框
-				window.confirm("") / confirm("")
+				window.confi rm("") / confirm("")
 				点击"确定"按钮的话，返回 true
 				其余的操作，一律都返回false
 
@@ -115,7 +115,7 @@
 		2、查找节点
 			1、通过元素id查找
 				前提：元素一定要具备id属性，否则无法找
-				var elem=document.getElementById("元素ID");
+				var elem = d vocument.getElementById("元素ID");
 					elem:对应ID的元素在JS中的表现形式 - DOM对象/DOM元素
 				
 				DOM对象属性：

@@ -16,7 +16,7 @@
 				向 parentNode 的内部追加 elem 新元素
 				parentNode ：表示页面上任何一个节点
 
-			3、parentNode.insertBefore(newElem,oldElem)
+			3、parentNode.insertBefore( newElem,oldElem)
 				将newElem元素插入到parentNode中oldElem元素之前
 	2、删除节点
 		在DOM中，删除节点的行为只能由父元素发起

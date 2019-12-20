@@ -1,0 +1,238 @@
+http://www.baidu.com
+http://localhost:8000
+
+
+
+http://localhost:8000/sport/******
+http://localhost:8000/music/******
+http://localhost:8000/news/*******
+
+http://localhost:8000  : 转交给 index 应用处理
+	交给 index 应用中的 index_views处理
+http://localhost:8000/login : 转交给 index 应用处理
+	交给 index 应用中的 login_views处理
+http://localhost:8000/register : 转交给index应用处理
+	交给 index 应用中的 register_views处理
+
+http://localhost:8000/login
+http://localhost:8000/news
+urlpatterns = [
+	url(r'^news/',include('news.urls'),
+	url(r'^music/',include('music.urls')),
+	url(r'^sport/',include('sport.urls')),
+
+	# 访问路径如果不满足以上三者的话，则交给下面的url处理
+	url(r'^',include('index.urls')),
+]
+
+在 index.urls 中：
+urlpatterns = [
+	#http://localhost:8000/
+	url(r'^$',index_views),
+	url(r'^login/$',login_views),
+	url(r'^register/$',register_views),
+]
+
+http://localhost:8000/news/
+	交给 news 应用中的 index_views 处理
+http://localhost:8000/sport/
+	交给 sport 应用中的 index_views 处理
+http://localhost:8000/music/
+	交给 music 应用中的 index_views 处理
+
+==================================================
+1、Django 模板(Template)
+	1、什么是模板
+		模板是要动态给用户呈现的网页内容
+		可以由Views(视图)呈现给用户
+		其实就是网页 - 前后端结合的一个网页
+	2、模板的设置
+		在 settings.py 中 TEMPLATES 变量
+		TEMPLATES = [
+			{
+				'BACKEND':'... ...',
+				'DIRS':[... ..],
+				... ..
+			},
+		]
+
+		1、BACKEND ：指定模板的搜索引擎，不用动
+		2、DIRS ：指定模板所存放的目录们
+			DIRS = ['index.temp','music.temp']
+			但是，如果DIRS中为空的话，那么Django会自动到每个应用中去搜索一个叫 templates 的文件夹作为模板管理目录
+			推荐：
+				1、DIRS 内容保持为空
+				2、在每个应用中，创建一个templates的文件夹
+		3、APP_DIRS
+			True ：首先从DIRS中指定的文件夹中查找模板，如果没找到的话，再搜索templates文件夹
+	3、模板的加载方式
+		1、使用 loader 获取模板，通过 HttpResponse 进行响应
+			from django.template import loader
+
+			def index_views(request):
+				#1. 通过loader加载模板
+				t=loader.get_template("01_index.html")
+				#2. 通过t对象，将模板渲染成字符串(允许传递变量到模板中)
+				html = t.render({})
+				{} : 表示要传递给模板的变量们
+					键：变量名
+					值：变量的值
+					如果没有变量传递的话， 允许省略{}
+				#3. 通过HttpResponse将html响应给客户端
+				return HttpResponse(html)
+		2、使用 render 直接加载并返回模板		
+			from django.shortcuts import render
+			
+			def xxx_views(request):
+				return render(request,'模板名称',{})
+
+		练习：
+			使用模板完成以下效果
+			http://localhost:8000/show
+			渲染 02_show.html 模板
+			在模板中显示以下效果：
+			歌名：<<绿光>>
+			作词：王宝强
+			作曲：贾乃亮
+			演唱：陈羽凡
+			绿光，王宝强，贾乃亮，陈羽凡 通过变量的方式进行传递的
+	4、url() 的name参数
+		url(regex,views,kwargs,name)
+			name:允许为当前url设置别名，允许在Tempalte中使用别名找到对应的 url
+		
+		url(regex,views,name='别名')
+		在Django模板中使用 name 实现url获取
+		{% url '别名' %}
+
+		1、通过 localhost:8000/news/01_params
+			去往 news 应用下 01_params.html 模板
+		2、在模板中增加一个超链接
+			localhost:8000/news/02_cal/35/72
+			链接中增加两个参数，分别都是1位以上的数字
+			在链接对应的视图中，对两个数字进行相加并打印在网页中(使用name别名)
+	5、模板的语法
+		1、变量
+			1、作用：允许将后端的数据传递给模板，在模板中，会根据变量的值进行显示
+
+			2、Django中允许传递给模板做变量的数据类型
+				数字，字符串，列表，元组，字典，函数，对象
+			3、变量的语法
+				1、loader
+					dic= {
+						'变量1':'值1',
+						'变量2':'值2',
+					}
+					t = loader.get_template('xxx.html')
+					return t.render(dic)
+				2、render
+					dic= {
+						'变量1':'值1',
+						'变量2':'值2',
+					}
+					return render(request,'xx.html',dic)
+			4、在模板中使用变量
+				{{变量名}}
+		2、标签
+			1、什么是标签
+				允许将服务器端的一些功能嵌入到模板中
+			2、语法
+				{% 标签内容 %}
+			
+			3、常用标签
+				1、for
+					{% for 变量 in 列表|元组|字典 %}
+					{% endfor %}
+					允许使用 for 提供的内置变量 - forloop
+					1、forloop.counter : 记录当前循环的次数(从1开始计)
+				2、if
+					{% if 条件 %}
+						满足条件运行的内容
+					{% endif %}
+				3、if ... else...
+					{% if 条件 %}
+					  满足条件执行的内容
+					{% else %}
+						不满足条件执行的内容
+					{% endif %}
+				4、if ...elif ... elif ...else
+					{% if 条件1 %}
+					 满足条件1运行的内容
+					{% elif 条件2 %}
+					 满足条件2运行的内容
+					{% else %}
+					 以上条件都不满足时运行的内容
+					{% endif %}
+		3、过滤器
+			1、作用
+				在显示变量的数据之前，允许对数据进行筛选或改变
+			2、过滤器的语法
+				{{变量|过滤器}}
+			3、常用过滤器
+				1、{{value|upper}}
+					将value变为大写字符输出
+				2、{{value|lower}}
+					将value变为小写字符输出
+				3、{{value|add:num}}
+					累加num到value的后面
+				4、{{value|floatformat:n}}
+					将value四舍五入到 n 位小数
+				5、{{value|truncatechars:n}}
+					将字符串进行截取到n位字符(包含...)
+					... ...
+		4、静态文件
+			1、什么是静态文件
+				模板中所需要用到的 css,js,image等一些资源文件都是静态文件
+			2、Django中静态文件的处理
+				需要在 settings.py 中设置静态文件的访问路径 和 存储路径
+				1、STATIC_URL
+					指定静态文件的访问路径
+					STATIC_URL='/static/'
+
+					作用：
+						当访问路径是 localhost:8000/static/***
+						一律都去静态文件存储路径中搜索静态文件
+				2、STATICFILES_DIRS
+					指定静态文件存储路径
+					STATICFILES_DIRS=(BASE_DIR,'static')
+					 'static':当前项目存放静态文件的目录名
+					在项目的 static 目中 以及 所有应用的 static 目录中存放就是静态文件
+			3、访问静态文件
+				1、直接使用 localhost:8000/static/***
+					<img src="/static/img/timg.jpeg">
+				2、使用 {%static %}访问静态资源
+					1、在模板的最顶层增加
+						{% load static %}
+					2、在使用静态资源时
+						{%static %}表示的就是 静态资源访问路径
+						<img src="{% static 'img/timg.jpeg'%}">
+
+			作业：
+				1、创建项目 fruitday (天天果园)
+				2、创建应用 - index ，并注册
+				3、配置 主路由文件 
+					localhost:8000/****
+					交给 index 应用处理
+				4、完善 fruitday 中的首页(模板) 和 登录页(模板)
+					1、访问 localhost:8000/ 
+						显示首页模板(html)
+					2、访问 localhost:8000/login
+						显示登录页模板(html)
+
+
+
+
+
+
+
+http://localhost:8000/name/show
+http://localhost:8000/show
+
+def cal_views(request, num1, num2):
+    result = int(num1) + int(num2)
+    return HttpResponse(result)
+
+<a href="{% url 'cal' '85' '96'%}">加法操作</a>
+
+# localhost:8000/news/02_cal/35/72
+    url(r'^02_cal/(\d+)/(\d+)/$', cal_views, name='cal'),
+

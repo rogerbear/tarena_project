@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .form-control{
+            width:300px;
+            height:28px;
+            border:1px solid #000;
+        }
+        .form-control:focus{
+            box-shadow:0 0 3px #f00;
+        }
+    </style>
+
+    <script>
+        function $(id){
+            return document.getElementById(id);
+        }
+        window.onload = function(){
+            var btn = $('btnVal')
+            btn.onclick = function(){
+                //获取文本框的值 - id: id_uname
+                var uname=$("id_uname").value;
+                alert('用户名为:'+uname)
+            }
+        }
+    </script>
+</head>
+<body>
+    <form action="/04_widget1/" method="post">
+        {{form.as_p}}
+        <p>
+            <input type="submit" value="提交">
+            <input type="button" value="验证" id="btnVal">
+        </p>
+    </form>
+</body>
+</html>

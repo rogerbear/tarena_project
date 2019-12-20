@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h2>通过　Book(多) 查询　Publisher(1)</h2>
+    <h3>书名:{{book.title}}</h3>
+    <p>出版时间:{{book.publicate_date}}</p>
+    <h3>出版社:{{publisher.name}}</h3>
+    <p>地址:{{publisher.address}}</p>
+    <p>网址:{{publisher.website}}</p>
+
+    <h2>通过　Publisher(1) 查询　所有的Book(多)</h2>
+    <h3>出版社:{{pub.name}}</h3>
+    <p>地址:{{pub.address}}</p>
+    <p>网址:{{pub.website}}</p>
+    {% for b in books %}
+        <h3>书名:{{b.title}}</h3>
+        <p>出版时间:{{b.publicate_date}}</p>
+    {% endfor %}
+
+</body>
+</html>

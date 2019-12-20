@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+	<style>
+		#d1{
+			width:200px;
+			height:400px;
+			background:yellow;
+			border:2px solid red;
+		}
+	</style>
+	<script src="jquery-1.11.3.js"></script>
+	<script>
+		$(function(){
+			$("#btnShow").click(function(){
+				$("#d1").show(5000);
+			});
+
+			$("#btnHide").click(function(){
+				$("#d1").hide(5000);
+			});
+		});
+	</script>
+ </head>
+ <body>
+	<p>
+		<button id="btnShow">基本显示</button>
+		<button id="btnHide">基本隐藏</button>
+	</p>
+  <div id="d1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium exercitationem veritatis deleniti repellat sit deserunt totam officiis facilis rem cupiditate suscipit iste amet! Expedita rem eos quis veniam tempora modi!</div>
+ </body>
+</html>

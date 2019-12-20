@@ -1,0 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 直接使用　/static　访问静态资源 -->
+    <h3>使用　/static　访问静态资源</h3>
+    <img src="/static/img/timg.jpeg">
+    <h3>使用　static 标签访问静态资源</h3>
+    <img src="{% static 'img/timg.jpeg'%}">
+</body>
+</html>

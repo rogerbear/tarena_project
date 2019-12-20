@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <a href="show">02_show(错误的)</a><br>
+
+    <a href="http://localhost:8000/show/">02_show(绝对路径)</a><br>
+
+    <a href="/show">02_show(根相对路径)</a><br>
+
+    <!--  -->
+    <a href="{% url 'ss'%}">02_show(使用name别名)</a>
+
+    <h3>链接到有参数的　url</h3>
+    <a href="http://localhost:8000/params/8888">params(绝对路径)</a> <br>
+    <a href="/params/5678/">params(根相对路径)</a> <br>
+    <a href="{% url 'pa' '6789' %}">params(使用name别名)</a>
+
+</body>
+</html>

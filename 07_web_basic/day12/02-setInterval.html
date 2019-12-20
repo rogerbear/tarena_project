@@ -15,11 +15,15 @@
 			},1000);
 		}
 
+		function check() {
+            console.log(timer)
+        }
 		function stop(){
 			clearInterval(timer);
 		}
 	</script>
-  <button onclick="start()">开始</button>
+    <button onclick="start()">开始</button>
+    <button onclick="check()">检查time对象</button>
 	<button onclick="stop()">停止</button>
  </body>
 </html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>作者列表</title>
+    <style>
+        #tbl{
+            border:1px solid #000;
+            border-collapse:collapse;
+            width:780px;
+        }
+        #tbl td{
+            border:1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <table id="tbl">
+        <tr>
+            <td>姓名</td>
+            <td>年龄</td>
+            <td>邮箱</td>
+            <td>操作</td>
+        </tr>
+        {% for au in authors%}
+            <tr>
+                <td>{{au.name}}</td>
+                <td>{{au.age}}</td>
+                <td>{{au.email}}</td>
+                <td>
+                    <a href="{% url 'delete' au.id%}">删除</a>
+                    <a href="#">修改</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</body> 
+</html>

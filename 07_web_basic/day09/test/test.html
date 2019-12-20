@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--<script>-->
+        <!--var y = prompt('请输入年份：');-->
+        <!--// var y = Number(y); 除了加法以外其他运算都不用转换数据类型-->
+        <!--var r = y%4==0 && y%100!=0 || y%400==0;-->
+        <!--console.log(r)-->
+    <!--</script>-->
+
+    <script>
+        // 练习：
+		// 	BMI 指数计算
+		// 	要求从弹框中录入身高(m)
+		// 	要求从弹框中录入体重(kg)
+		// 	BMI = 体重 / (身高 * 身高)
+        //
+		// 	如果 BMI 小于 18.5 属于偏瘦
+		// 	如果 BMI 大于 23.9 属于偏胖
+		// 	否则 ：正常
+        var he = prompt('high:')
+        var we = prompt('height:')
+        var BMI = we / (he*he) > 23.9 ? '偏胖' : (we / (he*he) < 18.5 ? '偏瘦' : '正常')
+        console.log(BMI)
+    </script>
+</body>
+</html>

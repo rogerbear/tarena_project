@@ -1,0 +1,145 @@
+FruitDay
+1、完成注册 
+	将信息保存进数据库
+2、完成登录
+	根据用户输入的信息完成信息验证，
+	验证成功，跳往首页
+	验证失败，跳回登录页面，并给出错误提示
+
+
+====================================================
+1、使用 forms 模块处理表单
+	1、forms 模块的作用
+		通过 forms 模块，允许将表单控件 与 py 文件相结合，可以自动生成表单控件
+	2、使用 forms 模块
+		1、创建 forms.py 文件
+		2、导入 forms 
+			from django import forms
+		3、创建 class，一个class对应一个表单
+			该class必须继承自forms.Form
+		4、在 class 中创建属性
+			一个属性对应着一个表单控件
+			(参考文档)
+	3、在模板中，解析 form 对象
+		1、注意
+			1、需要自定义 <form>
+			2、需要自定义 提交按钮
+		2、处理方法
+			1、手动解析
+				在视图中创建 forms.Form 的对象，并发送到模板中
+
+				ex:
+					form = RemarkForm()
+					return render(request,'xx.html',locals())
+
+				手动解析：
+					模板中:
+					{% form field in form %}
+						{{filed.label}} : 表示控件前的文本
+						{{field}} : 表示控件
+					{% endfor %}
+			2、自动解析
+				1、{{form.as_p}}
+					将表单中的每个属性都解析成一个 p 标记，再显示表单的控件以及标签
+				2、{{form.as_ul}}
+					将表单中的每个属性都解析成一个 li 标记，再显示表单的控件以及标签
+					注意：需要自定义 <ul></ul> 或 <ol></ol>
+				3、{{form.as_table}}
+	4、在视图中，通过 forms.Form 快速获取表单数据
+		1、通过 forms.Form 的构造函数，接收 post 数据
+			form = XXXForm(request.POST)
+		2、需要让form通过验证后，再取值
+			form.is_valid() 
+			返回 true : 提交的数据已经通过所有验证，允许接收表单提交的数据
+			返回 false: 提交的数据中有暂未通过验证的
+		3、获取表单提交的数据
+			通过 form.cleaned_data (字典) 接收提交的数据
+			cd = form.cleaned_data
+			print(cd['subject']) # 获取 subject 表单控件的值
+
+		练习：
+			1、在 forms.py 中追加一个 RegisterForm 类
+			2、增加以下属性，并生成到regsiter.html 显示成表单控件
+				1、uname ：文本框
+				2、upwd ：密码框
+				3、uemail ：邮件框
+				4、uage : 文本框
+			3、在 register.html中增加 form 和 submit
+			4、点击提交按钮时，将数据插入到数据库中
+				创建数据库 day7 ， 创建 Models-Users
+	5、forms 的高级处理
+		将 Models 和 Forms 结合到一起使用
+		1、在 forms.py 中，创建class，继承自 forms.ModelForm
+		2、创建内部类 ：Meta，关联 Form 和 Models
+			属性
+			1、model : 指定要关联的Model类
+			2、fields ：从models中取哪些字段生成控件
+				1、取值 "__all__"，全部的属性都要生成表单控件
+				2、指定一个列表，声明允许生成表单控件的属性名
+			3、labels ：每个属性关联的label，取值为 字典
+				labels = {
+					'属性名':'label文本',
+					'属性名':'label文本',
+				}
+
+
+
+<li>
+	<label for="id_subject">标题:</label> 
+	<input type="text" name="subject" value="初始数据" required id="id_subject" />
+</li>
+<li>
+	<label for="id_email">邮件:</label> 
+	<input type="email" name="email" required id="id_email" />
+</li>
+<li>
+	<label for="id_message">内容:</label> 
+	<textarea name="message" required cols="40" id="id_message" rows="10"></textarea>
+</li>
+<li>
+	<label for="id_topic">评价:</label> 
+	<select name="topic" id="id_topic">
+		<option value="level1">好评</option>
+
+		<option value="level2">中评</option>
+
+		<option value="level3">差评</option>
+	</select>
+</li>
+<li>
+	<label for="id_isSave">是否保存:</label> 
+	<input type="checkbox" name="isSave" required id="id_isSave" />
+</li>
+
+
+<tr>
+	<th><label for="id_subject">标题:</label></th>
+	<td><input type="text" name="subject" value="初始数据" required id="id_subject" /></td>
+</tr>
+<tr>
+	<th><label for="id_email">邮件:</label></th>
+	<td><input type="email" name="email" required id="id_email" /></td>
+</tr>
+<tr>
+	<th><label for="id_message">内容:</label></th>
+	<td>
+		<textarea name="message" required cols="40" id="id_message" rows="10"></textarea>
+	</td>
+</tr>
+<tr>
+	<th><label for="id_topic">评价:</label></th>
+	<td>
+		<select name="topic" id="id_topic">
+			<option value="level1">好评</option>
+			<option value="level2">中评</option>
+			<option value="level3">差评</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<th><label for="id_isSave">是否保存:</label></th>
+	<td>
+		<input type="checkbox" name="isSave" required id="id_isSave" />
+	</td>
+</tr>
+
